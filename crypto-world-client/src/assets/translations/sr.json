@@ -1,0 +1,116 @@
+{
+  "login": {
+    "title": "Prijava",
+    "form": {
+      "email": {
+        "name": "Email",
+        "placeholder": "Email"
+      },
+      "password":  {
+        "name": "Lozinka",
+        "placeholder": "Lozinka"
+      }
+    },   
+    "forgotPassword": "Zaboravio si lozinku?",
+    "buttons": {
+      "login": "Prijavi se",
+      "signUp": "Registruj se"
+    },
+    "message": "Nemas nalog?"
+  },
+  "signUp": {
+    "title": "Registracija",
+    "form": {
+      "firstName": {
+        "placeholder": "Ime"
+      },
+      "lastName": {
+        "placeholder": "Prezime"
+      },
+      "email": {
+        "placeholder": "Email *"
+      },
+      "password": {
+        "placeholder": "Lozinka *"
+      },
+      "repeatPassword": {
+        "placeholder": "Ponoviti lozinku *"
+      },
+      "birthday": {
+        "placeholder": "Rodjendan",
+        "label": "Rodjendan"
+      },
+      "company": {
+        "placeholder": "Kompanija"
+      },
+      "titleInTheCompany": {
+        "placeholder": "Pozicija"
+      }
+    },
+    "button": "Registruj se"
+  },
+  "forgotPassword": {
+    "title": "Zaboravljena lozinka",
+    "form": {
+      "email": {
+        "placeholder": "Email adresa *"
+      }
+    },
+    "link": "Nazad na prijavu",
+    "button":  "Zaboravljena lozinka",
+    "message": ""
+  }, 
+  "resetPassword" :{
+    "title": "Obnovi lozinku",
+    "form": {
+      "password": {
+        "placeholder": "Lozinka"
+      },
+      "repeatPassword": {
+        "placeholder": "Ponovi lozinku"
+      }
+    },
+    "button": "Obnovi lozinku"   
+  },
+  "profile" : {
+    "formInfo": {
+      "about": "O meni",
+      "birthday": "datum rodjenja",
+      "company": "kompanija",
+      "titleInTheCompany": "pozicija",
+      "balance": "stanje na racunu"
+    },
+    "formAddToken": {
+      "title": "Dodaj token",
+      "name":{
+        "placeholder": "Naziv",
+        "label": "Naziv"
+      }, "price":{
+        "placeholder": "Cena",
+        "label": "Cena"
+      },"ico": {
+        "placeholder": "Inicijalna kolicina",
+        "label": "Inicijalna kolicina"
+      }
+    },
+    "tokensTable" : {
+      "title" : "Moji aktivni tokeni",
+      "rows" : {
+        "name": "Naziv",
+        "price": "Cena",
+        "ico": "Ico"
+      }
+    },
+    "buttons": {
+      "addToken": "Dodaj token",
+      "showTokens": "Prokazi moje tokene",
+      "showInfo": "Prokazi moje informacije"
+    },
+    "messageAddButton": "Token je dodat."
+  },
+  "navigation" : {
+    "home" : "Pocetna strana",
+    "profile" : "Profil",
+    "logout" : "Odjavi se"
+  }
+}

@@ -1,0 +1,9 @@
+# Ignore artifacts:
+build
+public
+node_modules
+
+# Ignore all JSON and YML files:
+*.json
+*.yml
+*.lock

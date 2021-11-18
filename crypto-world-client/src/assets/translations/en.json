@@ -1,0 +1,116 @@
+{
+  "login": {
+    "title": "Login",
+    "form": {
+      "email": {
+        "name": "Email",
+        "placeholder": "Email"
+      },
+      "password": {
+        "name": "Password",
+        "placeholder": "Password"
+      }
+    },
+    "forgotPassword": "Forgot password?",
+    "buttons": {
+      "login": "Login",
+      "signUp": "Sign up"
+    },
+    "message": "Don't have an account?"
+  },
+  "signUp": {
+    "title": "SignUp",
+    "form": {
+      "firstName": {
+        "placeholder": "First name"
+      },
+      "lastName": {
+        "placeholder": "Last name"
+      },
+      "email": {
+        "placeholder": "Email *"
+      },
+      "password": {
+        "placeholder": "Password *"
+      },
+      "repeatPassword": {
+        "placeholder": "Repeat password *"
+      },
+      "birthday": {
+        "placeholder": "Birthday",
+        "label": "Birthday"
+      },
+      "company": {
+        "placeholder": "Company"
+      },
+      "titleInTheCompany": {
+        "placeholder": "Title in the company"
+      }
+    },
+    "button": "Sign Up"
+  },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "form": {
+      "email": {
+        "placeholder": "Your email address *"
+      }
+    },
+    "link": "Back to login",
+    "button":  "Forgot password",
+    "message": ""
+  }, 
+  "resetPassword" :{
+    "title": "Reset Password",
+    "form": {
+      "password": {
+        "placeholder": "Password"
+      },
+      "repeatPassword": {
+        "placeholder": "Repeat Password"
+      }
+    },
+    "button": "Reset My Password"
+  },
+  "profile" : {
+    "formInfo": {
+      "about": "About me",
+      "birthday": "date of birth",
+      "company": "company",
+      "titleInTheCompany": "title in the company",
+      "balance": "balance"
+    },
+    "formAddToken": {
+      "title": "Add token",
+      "name":{
+        "placeholder": "Name",
+        "label": "Name"
+      }, "price":{
+        "placeholder": "Price",
+        "label": "Price"
+      },"ico": {
+        "placeholder": "ICO",
+        "label": "ICO (Initial coin offering)"
+      }
+    },
+    "tokensTable" : {
+      "title" : "My active tokens",
+      "rows" : {
+        "name": "Name",
+        "price": "Price",
+        "ico": "Ico"
+      }
+    },
+    "buttons": {
+      "addToken": "Add token",
+      "showTokens": "My active tokens",
+      "showInfo": "See all info"
+    },
+    "messageAddButton": "Token is added."
+  },
+  "navigation" : {
+    "home" : "Home",
+    "profile" : "Profile",
+    "logout" : "Log out"
+  }
+}

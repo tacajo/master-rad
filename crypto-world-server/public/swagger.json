@@ -1,0 +1,542 @@
+{
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"ResponseMessage": {
+			"properties": {
+				"message": {
+					"type": "string",
+					"default": ""
+				},
+				"statusCode": {
+					"additionalProperties": true
+				},
+				"data": {
+					"additionalProperties": true
+				}
+			},
+			"required": [
+				"statusCode",
+				"data"
+			],
+			"type": "object",
+			"additionalProperties": false
+		}
+	},
+	"info": {
+		"title": "crypto",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/user/{id}": {
+			"get": {
+				"operationId": "GetUser",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/user/all": {
+			"get": {
+				"operationId": "GetAllUser",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user/register": {
+			"post": {
+				"operationId": "RegisterUser",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"firstName": {
+									"type": "string"
+								},
+								"lastName": {
+									"type": "string"
+								},
+								"company": {
+									"type": "string"
+								},
+								"balance": {
+									"type": "number",
+									"format": "double"
+								},
+								"birthday": {
+									"additionalProperties": true
+								},
+								"titleInTheCompnay": {
+									"type": "string"
+								},
+								"email": {
+									"type": "string"
+								},
+								"password": {
+									"type": "string"
+								}
+							},
+							"title": "RegisterUserBody",
+							"type": "object",
+							"required": [
+								"firstName",
+								"lastName",
+								"company",
+								"balance",
+								"birthday",
+								"titleInTheCompnay",
+								"email",
+								"password"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/user/login": {
+			"post": {
+				"operationId": "Login",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"email": {
+									"type": "string"
+								},
+								"password": {
+									"type": "string"
+								}
+							},
+							"title": "LoginBody",
+							"type": "object",
+							"required": [
+								"email",
+								"password"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/user/ban/{id}": {
+			"put": {
+				"operationId": "BanUser",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/token": {
+			"post": {
+				"operationId": "CreateToken",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"price": {
+									"type": "number",
+									"format": "double"
+								},
+								"ico": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "CreateTokenBody",
+							"type": "object",
+							"required": [
+								"name",
+								"price",
+								"ico"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/token/approve/{id}": {
+			"put": {
+				"operationId": "ApproveToken",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/token/reject/{id}": {
+			"put": {
+				"operationId": "RejectToken",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/token/purchase": {
+			"post": {
+				"operationId": "CreateTokenPurchaseRequest",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"token_id": {
+									"additionalProperties": true
+								},
+								"user_id": {
+									"additionalProperties": true
+								},
+								"amount": {
+									"additionalProperties": true
+								}
+							},
+							"title": "CreateTokenPurchaseRequestBody",
+							"type": "object",
+							"required": [
+								"token_id",
+								"user_id",
+								"amount"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/token/purchase/approve/{id}": {
+			"put": {
+				"operationId": "ApproveTokenPurchaseRequest",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"format": "double",
+						"type": "number"
+					}
+				]
+			}
+		},
+		"/token/issued/{user_id}": {
+			"get": {
+				"operationId": "GetAllIssuedTokens",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/token/active": {
+			"get": {
+				"operationId": "GetAllActiveTokens",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/token/allholders/{token_id}": {
+			"get": {
+				"operationId": "GetAllHoldersToken",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "token_id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/token/topholders/{token_name}": {
+			"get": {
+				"operationId": "GetTopHoldersToken",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "token_name",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/course": {
+			"post": {
+				"operationId": "AddCourse",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"ticket": {
+									"type": "string"
+								},
+								"price": {
+									"type": "number",
+									"format": "double"
+								},
+								"rating": {
+									"type": "number",
+									"format": "double"
+								},
+								"description": {
+									"type": "string"
+								}
+							},
+							"title": "AddCourseBody",
+							"type": "object",
+							"required": [
+								"title",
+								"ticket",
+								"price",
+								"rating",
+								"description"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/course/all": {
+			"get": {
+				"operationId": "GetAllCourses",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {}
+}
