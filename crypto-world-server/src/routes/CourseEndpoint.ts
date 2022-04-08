@@ -18,9 +18,29 @@ router.post("", async (req, res) => {
   return res.status(response?.statusCode).send(response);
 });
 
-router.get("/all", async (req, res) => {
+router.get("/all", [JWTMiddleware.verifyToken], async (req: any, res: any) => {
   const controller = Container.get(CourseController);
-  const response = await controller.getAllCourses();
+  const response = await controller.getAllCourses(req);
+  return res.status(response?.statusCode).send(response);
+});
+
+router.post(
+  "/cart",
+  [JWTMiddleware.verifyToken],
+  async (req: any, res: any) => {
+    const controller = Container.get(CourseController);
+    const response = await controller.addCourseToCart(
+      req.user.id,
+      req.body.course_id
+    );
+    return res.status(response?.statusCode).send(response);
+  }
+);
+
+router.get("/cart", [JWTMiddleware.verifyToken], async (req: any, res: any) => {
+  const controller = Container.get(CourseController);
+  console.log("usao u get form cart ", req.user, req.body.course_id);
+  const response = await controller.getCoursesFromCart(req);
   return res.status(response?.statusCode).send(response);
 });
 

@@ -3,10 +3,15 @@ import morgan from "morgan";
 import UserEndpoint from "./routes/UserEndpoint";
 import TokenEndpoint from "./routes/TokenEndpoint";
 import CourseEndpoint from "./routes/CourseEndpoint";
+import S3Endpoint from "./routes/S3Endpoint";
 import swaggerUi from "swagger-ui-express";
 import { PostgresDB } from "../src/config/PostgresDB";
+import { JWTMiddleware } from "./middleware/VerifyToken";
 var cors = require("cors");
 const paypal = require("paypal-rest-sdk");
+import { TransactionQueryProcessor } from "../src/query_processor/TransactionQueryProcessor";
+import { CourseQueryProcessor } from "./query_processor/CourseQueryProcessor";
+const AWS = require("aws-sdk");
 
 paypal.configure({
   mode: "sandbox",
@@ -41,6 +46,7 @@ app.use(
 app.use("/token", TokenEndpoint);
 app.use("/user", UserEndpoint);
 app.use("/course", CourseEndpoint);
+app.use("/s3", S3Endpoint);
 
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);
@@ -56,7 +62,84 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.send("500: Internal server error");
 });
 
-app.post("/pay", (req, res) => {
+app.get("/s3Proxy", function (req, res, next) {
+  // download the file via aws s3 here
+  // var fileKey = req.query['fileKey'];
+  console.log("Trying to download file", "angular-image.png");
+  AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  });
+
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID /* required */,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY /* required */,
+    Bucket: process.env.AWS_BUCKET /* required */,
+  });
+  var options = {
+    Bucket: "tacajobucket",
+    Key: "Become_a_ninja_with_Angular_sample.pdf",
+  };
+
+  console.log("here 1");
+  //ako se zakomentarise res.attachemnt onda se samo otvori file ali se ne downloaduje
+  res.attachment("Become_a_ninja_with_Angular_sample.pdf");
+  var fileStream = s3.getObject(options).createReadStream();
+  console.log("here 2");
+  fileStream.pipe(res);
+});
+
+app.get("/s3/read", function (req, res, next) {
+  // download the file via aws s3 here
+  // var fileKey = req.query['fileKey'];
+  console.log("Trying to read file", "angular-image.png");
+  AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  });
+
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID /* required */,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY /* required */,
+    Bucket: process.env.AWS_BUCKET /* required */,
+  });
+  var options = {
+    Bucket: "tacajobucket",
+    Key: "react.jpg",
+  };
+
+  console.log("here 1");
+  //ako se zakomentarise res.attachemnt onda se samo otvori file ali se ne downloaduje
+  res.attachment("react.jpg");
+  let objectData;
+  var file = s3.getObject(options, function (err: any, data: any) {
+    // Handle any error and exit
+    if (err) return err;
+
+    // No error happened
+    // Convert Body from a Buffer to a String
+    objectData = data.Body.toString("utf-8"); // Use the encoding necessary
+    console.log(objectData)
+  });
+  res.send(objectData);
+});
+
+app.post("/pay", [JWTMiddleware.verifyToken], async (req: any, res: any) => {
+  const itemList = req.body.map((course: any) => {
+    return {
+      name: course?.title,
+      sku: course?.course_id,
+      price: course?.price,
+      currency: "USD",
+      quantity: 1,
+    };
+  });
+
+  const sum = req.body.reduce(
+    (accum: number, currentValue: any) => accum + currentValue.price,
+    0
+  );
+
   const create_payment_json = {
     intent: "sale",
     payer: {
@@ -69,54 +152,59 @@ app.post("/pay", (req, res) => {
     transactions: [
       {
         item_list: {
-          items: [
-            {
-              name: "item",
-              sku: "item",
-              price: "3.99",
-              currency: "USD",
-              quantity: 1,
-            },
-          ],
+          items: [...itemList],
         },
         amount: {
           currency: "USD",
-          total: "3.99",
+          total: sum,
         },
         description: "This is the payment description.",
       },
     ],
   };
+
   paypal.payment.create(
     create_payment_json,
-    function (error: any, payment: any) {
+    async function (error: any, payment: any) {
       if (error) {
         console.log("paypal error!!!");
+        console.log(error.response.details);
         throw error;
       } else {
         console.log("paypal success!!!");
-
+        console.log("PAYMENT:", payment);
         for (let i = 0; i < payment.links.length; i++) {
           if (payment.links[i].rel === "approval_url") {
             res.json({ forwardLink: payment.links[i].href });
           }
         }
+
+        const result = await TransactionQueryProcessor.addTransaction(
+          payment?.id,
+          req.user.id,
+          sum
+        );
       }
     }
   );
 });
 
-app.get("/success", (req, res) => {
+app.get("/success", async (req, res) => {
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
 
+  const transactionDB = await TransactionQueryProcessor.getTransaction(
+    paymentId
+  );
+
+  console.log("TRANSACTION", transactionDB);
   const execute_payment_json = {
     payer_id: payerId,
     transactions: [
       {
         amount: {
           currency: "USD",
-          total: "3.99",
+          total: transactionDB?.amount,
         },
       },
     ],
@@ -132,7 +220,17 @@ app.get("/success", (req, res) => {
         console.log(error.response);
         throw error;
       } else {
-        console.log(JSON.stringify(payment));
+        console.log("TRANSACTION IZ PAYMENT EXECUTE", JSON.stringify(payment));
+        payment?.transactions.map((transaction: any) => {
+          transaction?.item_list.items.map(async (item: any) => {
+            console.log("ITEM", item);
+            const result = await CourseQueryProcessor.updateItemTransaction(
+              transactionDB.user_id,
+              item.sku
+            );
+            if (!result) res.send("Item cannot be updated.");
+          });
+        });
         res.send("Success");
       }
     }
@@ -140,3 +238,76 @@ app.get("/success", (req, res) => {
 });
 
 app.get("/cancel", (req, res) => res.send("Cancelled"));
+
+app.post(
+  "/subscription",
+  [JWTMiddleware.verifyToken],
+  async (req: any, res: any) => {
+    var billingPlanAttribs = {
+      name: "Food of the World Club Membership: Standard",
+      description: "Monthly plan for getting the t-shirt of the month.",
+      type: "fixed",
+      payment_definitions: [
+        {
+          name: "Standard Plan",
+          type: "REGULAR",
+          frequency_interval: "1",
+          frequency: "MONTH",
+          cycles: "11",
+          amount: {
+            currency: "USD",
+            value: "19.99",
+          },
+        },
+      ],
+      merchant_preferences: {
+        setup_fee: {
+          currency: "USD",
+          value: "1",
+        },
+        cancel_url: "http://localhost:3000/cancel",
+        return_url: "http://localhost:3000/processagreement",
+        max_fail_attempts: "0",
+        auto_bill_amount: "YES",
+        initial_fail_amount_action: "CONTINUE",
+      },
+    };
+
+    paypal.billingPlan.create(
+      billingPlanAttribs,
+      function (error: any, billingPlan: any) {
+        var billingPlanUpdateAttributes;
+
+        if (error) {
+          console.error(JSON.stringify(error));
+          throw error;
+        } else {
+          // Create billing plan patch object
+          billingPlanUpdateAttributes = [
+            {
+              op: "replace",
+              path: "/",
+              value: {
+                state: "ACTIVE",
+              },
+            },
+          ];
+
+          // Activate the plan by changing status to active
+          paypal.billingPlan.update(
+            billingPlan.id,
+            billingPlanUpdateAttributes,
+            function (error: any, response: any) {
+              if (error) {
+                console.error(JSON.stringify(error));
+                throw error;
+              } else {
+                console.log("Billing plan created under ID: " + billingPlan.id);
+              }
+            }
+          );
+        }
+      }
+    );
+  }
+);

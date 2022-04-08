@@ -532,6 +532,61 @@
 				"security": [],
 				"parameters": []
 			}
+		},
+		"/course/cart": {
+			"post": {
+				"operationId": "AddCourseToCart",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"user_id": {
+									"type": "string"
+								},
+								"course_id": {
+									"type": "string"
+								}
+							},
+							"title": "AddCourseToCartBody",
+							"type": "object",
+							"required": [
+								"user_id",
+								"course_id"
+							]
+						}
+					}
+				]
+			},
+			"get": {
+				"operationId": "GetCoursesFromCart",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
 		}
 	},
 	"produces": [

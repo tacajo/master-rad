@@ -1,4 +1,4 @@
-import { BodyProp, Get, Path, Post, Put, Query, Route } from "tsoa";
+import { BodyProp, Get, Post, Route, Request } from "tsoa";
 import { CourseRepository } from "../repository/CourseRepository";
 import { UserRepository } from "../repository/UserRepository";
 
@@ -23,8 +23,24 @@ export default class CourseController {
   }
 
   @Get("/all")
-  public async getAllCourses() {
-    let result = await CourseRepository.getAllCourses();
+  public async getAllCourses(@Request() req: any) {
+    let result = await CourseRepository.getAllCourses(req.user.id);
+    return result;
+  }
+
+  @Post("/cart")
+  public async addCourseToCart(
+    @BodyProp("user_id") user_id: String,
+    @BodyProp("course_id") course_id: String
+  ) {
+    let result = await CourseRepository.addCourseToCart(user_id, course_id);
+    return result;
+  }
+
+  @Get("/cart")
+  public async getCoursesFromCart(@Request() req: any) {
+    let result = await CourseRepository.getCoursesFromCart(req.user.id);
+    console.log(result);
     return result;
   }
 }
