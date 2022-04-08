@@ -79,6 +79,16 @@ export const GlobalStyle = StyleSheet.create({
     padding: "10px 20px",
     borderRadius: "5px",
   },
+  payButton: {
+    display: "block",
+    border: "none",
+    background: COLORS.green,
+    fontSize: "16px",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+    padding: "10px 20px",
+    borderRadius: "5px",
+  },
   message: {
     alignContent: "center",
   },

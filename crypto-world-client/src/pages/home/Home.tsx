@@ -6,19 +6,24 @@ import ReactStars from "react-stars";
 import image from "../../assets/images/Free-Online-Course.jpg";
 import { ICourse } from "../../interfaces/course.interface";
 import { useEffect, useState } from "react";
-import { getAllCourses } from "../../services/course.service";
+import { addToCart, getAllCourses } from "../../services/course.service";
 
 export default function Home() {
   const [courses, setCourses] = useState<ICourse[]>([]);
-
+  async function getCourses() {
+    const result = await getAllCourses();
+    console.log(result);
+    setCourses(result.data);
+  }
   useEffect(() => {
-    async function getCourses() {
-      const result = await getAllCourses();
-      console.log(result);
-      setCourses(result.data);
-    }
     getCourses();
   }, []);
+
+  async function addCourseToCart(id: String) {
+    console.log("add course to cart");
+    const result = await addToCart(id);
+    getCourses();
+  }
 
   return (
     <div className="container">
@@ -37,7 +42,16 @@ export default function Home() {
               <p className={css(style.price)}>${course.price}</p>
               <button className={css(style.buttonSeeDetails)}>See details</button>
               <div className="d-flex justify-content-end">
-                <button className={css(style.button)}>Add to Cart</button>
+                {course.status == "0" && (
+                  <button className={css(style.button)} disabled>
+                    Added to Cart
+                  </button>
+                )}
+                {course.status != "0" && course.status != "1" && (
+                  <button className={css(style.button)} onClick={() => addCourseToCart(course.course_id)}>
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </div>
           </Col>
