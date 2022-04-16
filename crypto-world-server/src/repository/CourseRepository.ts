@@ -44,6 +44,7 @@ export class CourseRepository {
           description: string;
           price: number;
           status: string;
+          cover: string;
         }) => {
           let course = userCourses.find(
             (course: { course_id: string; status: string }) =>
@@ -58,6 +59,7 @@ export class CourseRepository {
               description: res.description,
               price: res.price,
               status: course.status,
+              cover: res.cover,
             };
           return res;
         }
@@ -91,7 +93,7 @@ export class CourseRepository {
       let result = await CourseQueryProcessor.getCoursesFromCart(user_id);
       if (!result)
         return new ResponseMessage(
-          "There was a problem getting the courses from cart.",
+          "There was a problem getting courses from cart.",
           "500",
           null
         );
@@ -111,6 +113,68 @@ export class CourseRepository {
       let result = await CourseQueryProcessor.getCourse(course_id);
       if (result) return result[0];
       return null;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  public static async getMyCourses(user_id: String) {
+    try {
+      let courses = await CourseQueryProcessor.getAllCourses();
+      if (!courses) return;
+      let userCourses = await CourseQueryProcessor.getPaidCourses(user_id);
+      let result = userCourses.map(
+        (res: {
+          course_id: string;
+          title: string;
+          ticket: string;
+          rating: number;
+          description: string;
+          price: number;
+          status: string;
+          cover: string;
+        }) => {
+          let course = courses.find(
+            (course: { course_id: string; status: string }) =>
+              course.course_id == res.course_id
+          );
+          console.log({course})
+          if (course)
+            return {
+              course_id: course.course_id,
+              title: course.title,
+              ticket: course.ticket,
+              rating: course.rating,
+              description: course.description,
+              price: course.price,
+              status: course.status,
+              cover: course.cover,
+            };
+          return res;
+        }
+      );
+
+      if (!result)
+        return new ResponseMessage(
+          "There was a problem getting courses.",
+          "500",
+          null
+        );
+      return new ResponseMessage("Success", "200", result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  public static async getCourseFiles(course_id: String) {
+    try {
+      let result = await CourseQueryProcessor.getFilesName(course_id);
+      if (!result)
+      return new ResponseMessage(
+        "There was a problem getting courses files.",
+        "500",
+        null
+      );
+    return new ResponseMessage("Success", "200", result);
     } catch (err) {
       console.log(err);
     }

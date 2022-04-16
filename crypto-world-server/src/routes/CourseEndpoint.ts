@@ -39,9 +39,19 @@ router.post(
 
 router.get("/cart", [JWTMiddleware.verifyToken], async (req: any, res: any) => {
   const controller = Container.get(CourseController);
-  console.log("usao u get form cart ", req.user, req.body.course_id);
   const response = await controller.getCoursesFromCart(req);
   return res.status(response?.statusCode).send(response);
 });
 
+router.get("/my-courses", [JWTMiddleware.verifyToken], async (req: any, res: any) => {
+  const controller = Container.get(CourseController);
+  const response = await controller.getMyCourses(req);
+  return res.status(response?.statusCode).send(response);
+});
+
+router.get("/course-files/:course_id", [JWTMiddleware.verifyToken], async (req: any, res: any) => {
+  const controller = Container.get(CourseController);
+  const response = await controller.getCourseFile(req.params.course_id);
+  return res.status(response?.statusCode).send(response);
+});
 export default router;

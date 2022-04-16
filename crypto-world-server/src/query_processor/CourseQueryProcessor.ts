@@ -33,6 +33,12 @@ export class CourseQueryProcessor {
     return result.rows;
   }
 
+  public static async getPaidCourses(user_id: String) {
+    let query = "SELECT * FROM public.user_course WHERE user_id = $1 and status = $2";
+    let result = await PostgresDB.client.query(query, [user_id, CartEnum.PAID]);
+    return result.rows;
+  }
+
   public static async addCourseToCart(user_id: String, course_id: String) {
     let query =
       "INSERT INTO public.user_course (user_id, course_id, status) VALUES ($1, $2, $3) RETURNING *";
@@ -68,6 +74,15 @@ export class CourseQueryProcessor {
       CartEnum.PAID,
       user_id,
       course_id,
+    ]);
+    return result.rows;
+  }
+
+  public static async getFilesName(course_id: String) {
+    let query =
+    "SELECT * FROM public.course_file WHERE course_id = $1";
+    let result = await PostgresDB.client.query(query, [
+      course_id
     ]);
     return result.rows;
   }

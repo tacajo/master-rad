@@ -587,6 +587,49 @@
 				"security": [],
 				"parameters": []
 			}
+		},
+		"/course/my-courses": {
+			"get": {
+				"operationId": "GetMyCourses",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/course/course-file/{course_id}": {
+			"get": {
+				"operationId": "GetCourseFile",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "course_id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
 		}
 	},
 	"produces": [

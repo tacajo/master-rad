@@ -12,6 +12,7 @@ const paypal = require("paypal-rest-sdk");
 import { TransactionQueryProcessor } from "../src/query_processor/TransactionQueryProcessor";
 import { CourseQueryProcessor } from "./query_processor/CourseQueryProcessor";
 const AWS = require("aws-sdk");
+const fs = require("fs");
 
 paypal.configure({
   mode: "sandbox",
@@ -62,10 +63,11 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.send("500: Internal server error");
 });
 
-app.get("/s3Proxy", function (req, res, next) {
-  // download the file via aws s3 here
-  // var fileKey = req.query['fileKey'];
-  console.log("Trying to download file", "angular-image.png");
+// download file from s3 bucket
+app.get("/download", function (req, res, next) {
+  // download the file via aws s3
+  var fileKey = req.query["fileKey"] as string;
+  console.log("Trying to download file", fileKey);
   AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -78,21 +80,22 @@ app.get("/s3Proxy", function (req, res, next) {
   });
   var options = {
     Bucket: "tacajobucket",
-    Key: "Become_a_ninja_with_Angular_sample.pdf",
+    Key: fileKey,
   };
 
-  console.log("here 1");
   //ako se zakomentarise res.attachemnt onda se samo otvori file ali se ne downloaduje
-  res.attachment("Become_a_ninja_with_Angular_sample.pdf");
+  res.attachment(fileKey);
   var fileStream = s3.getObject(options).createReadStream();
-  console.log("here 2");
   fileStream.pipe(res);
 });
 
-app.get("/s3/read", function (req, res, next) {
-  // download the file via aws s3 here
-  // var fileKey = req.query['fileKey'];
-  console.log("Trying to read file", "angular-image.png");
+// read file from s3 bucket
+app.get("/get-s3-file", function (req, res, next) {
+  // download the file via aws s3
+  var fileKey = req.query["fileKey"] as string;
+  var fileSize = req.query["fileSize"] as string;
+
+  console.log("Trying to send file", fileKey);
   AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -105,23 +108,20 @@ app.get("/s3/read", function (req, res, next) {
   });
   var options = {
     Bucket: "tacajobucket",
-    Key: "react.jpg",
+    Key: fileKey,
   };
-
-  console.log("here 1");
-  //ako se zakomentarise res.attachemnt onda se samo otvori file ali se ne downloaduje
-  res.attachment("react.jpg");
-  let objectData;
-  var file = s3.getObject(options, function (err: any, data: any) {
-    // Handle any error and exit
-    if (err) return err;
-
-    // No error happened
-    // Convert Body from a Buffer to a String
-    objectData = data.Body.toString("utf-8"); // Use the encoding necessary
-    console.log(objectData)
-  });
-  res.send(objectData);
+  
+  const [name, extension] = fileKey.split(".");
+  if (extension === "mp4") {
+    console.log({extension})
+ 
+    res.writeHead(200, { 'Content-Length': fileSize, 'Content-Type': 'video/mp4' });
+    var fileStream = s3.getObject(options).createReadStream();
+  } else {
+    var fileStream = s3.getObject(options).createReadStream();
+  }
+  
+  fileStream.pipe(res);
 });
 
 app.post("/pay", [JWTMiddleware.verifyToken], async (req: any, res: any) => {
