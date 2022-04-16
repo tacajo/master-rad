@@ -13,6 +13,11 @@ export const CartStyle = StyleSheet.create({
     fontSize: "26px",
     padding: "20px",
   },
+  courseProfileTitle: {
+    color: COLORS.white,
+    fontSize: "22px",
+    padding: "20px",
+  },
   card: {
     marginBottom: "40px",
     background: COLORS.lightGray,

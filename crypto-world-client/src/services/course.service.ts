@@ -40,8 +40,84 @@ export function getCoursesFromCart() {
     });
 }
 
+export function getMyCourses() {
+  const url = `${constants.BASE_URL}/course/my-courses`;
+  return axiosApi({ url: url, method: "get" })
+    .then((res) => {
+      return {
+        data: res.data.data,
+        message: res.data.message,
+        error: false,
+      };
+    })
+    .catch((err) => {
+      return {
+        data: null,
+        message: err.response.data.message,
+        error: true,
+      };
+    });
+}
+
+export function getCoursesFile(course_id: String) {
+  const url = `${constants.BASE_URL}/course/course-files/${course_id}`;
+  return axiosApi({ url: url, method: "get" })
+    .then((res) => {
+      return {
+        data: res.data.data,
+        message: res.data.message,
+        error: false,
+      };
+    })
+    .catch((err) => {
+      return {
+        data: null,
+        message: err.response.data.message,
+        error: true,
+      };
+    });
+}
+
+export function downloadFile(fileKey: String) {
+  const url = `${constants.BASE_URL}/download`;
+  return axiosApi({ url: url, method: "get", params: { fileKey }, responseType: "blob" })
+    .then((res) => {
+      return {
+        data: res.config.data,
+        message: res.data.message,
+        error: false,
+      };
+    })
+    .catch((err) => {
+      return {
+        data: null,
+        message: err.response.data.message,
+        error: true,
+      };
+    });
+}
+
+export function getFile(fileKey: String) {
+  const url = `${constants.BASE_URL}/get-s3-file`;
+  return axiosApi({ url: url, method: "get", params: { fileKey } })
+    .then((res) => {
+      return {
+        data: res.config.data,
+        message: res.data.message,
+        error: false,
+      };
+    })
+    .catch((err) => {
+      return {
+        data: null,
+        message: err.response.data.message,
+        error: true,
+      };
+    });
+}
+
 export function pay(courses: ICourse[]) {
-  const url = `${constants.BASE_URL}/subscription`;
+  const url = `${constants.BASE_URL}/pay`;
   return axiosApi({ url: url, data: courses, method: "post" })
     .then((res) => {
       window.location = res.data.forwardLink;

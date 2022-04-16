@@ -6,4 +6,5 @@ export interface ICourse {
   description: string;
   price: number;
   status: string;
+  cover: string
 }

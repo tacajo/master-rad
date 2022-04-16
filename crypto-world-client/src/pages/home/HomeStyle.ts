@@ -5,13 +5,13 @@ export const HomeStyle = StyleSheet.create({
   title: {
     color: COLORS.darkBlue,
     fontSize: "45px",
-    marginTop: "80px",
-    marginBottom: "50px",
+    marginTop: "70px",
+    marginBottom: "30px",
   },
   courseTitle: {
     color: COLORS.white,
-    fontSize: "26px",
-    padding: "20px",
+    fontSize: "22px",
+    padding: "20px 20px 0 20px",
   },
   card: {
     marginBottom: "40px",
@@ -20,6 +20,23 @@ export const HomeStyle = StyleSheet.create({
     ":hover": {
       transform: "scale(1.05)",
     },
+  },
+  myCard: {
+    marginBottom: "40px",
+    background: COLORS.lightGray,
+    borderRadius: "4px",
+    ":hover": {
+      transform: "scale(1.05)",
+    },
+  },
+  myCourseTicket: {
+    padding: "0 20px",
+    letterSpacing: "0.05em",
+    fontWeight: FONT_WEIGHT.BOLD,
+    color: COLORS.lightGray,
+    textShadow: `0 15px 35px ${COLORS.gray}`,
+    marginTop: "-30px",
+    borderRadius: "2px",
   },
   ticket: {
     color: COLORS.darkBlue,
@@ -51,6 +68,20 @@ export const HomeStyle = StyleSheet.create({
     margin: "0 20px 20px",
     border: "none",
     background: COLORS.green,
+    fontSize: "14px",
+    textTransform: "uppercase",
+    letterSpacing: "0.1px",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    ":hover": {
+      fontWeight: 600,
+    },
+  },
+  downloadButton: {
+    margin: "0 20px 20px",
+    border: "none",
+    background: COLORS.lightBlack,
+    color: COLORS.white,
     fontSize: "14px",
     textTransform: "uppercase",
     letterSpacing: "0.1px",

@@ -7,7 +7,6 @@ export const ProfileStyle = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     flexDirection: "row",
-    alignItems: "center",
   },
   link: {
     color: COLORS.white,
@@ -25,13 +24,11 @@ export const ProfileStyle = StyleSheet.create({
     borderRadius: "4px",
   },
   rightPart: {
+    marginTop: "50px",
     padding: "40px",
     alignItems: "center",
     width: "60%",
-    height: "50%",
-    background: COLORS.white,
     borderRadius: "4px",
-    opacity: 0.8,
   },
   nameWrapper: {
     width: "250px",
@@ -60,18 +57,28 @@ export const ProfileStyle = StyleSheet.create({
   },
   buttonSection: {
     marginTop: "80px",
-    marginRight: "40px",
+    textAlign: "center",
     fontSize: "12px",
   },
-  title: {
-    color: COLORS.white,
-    textAlign: "center",
-    height: "100%",
-    width: "100%",
-    fontSize: "22px",
-    marginBottom: "60px",
+  buttonMyCourses: {
+    display: "block",
+    border: "none",
+    margin: "auto",
+    background: COLORS.green,
+    fontSize: "16px",
     textTransform: "uppercase",
+    letterSpacing: "1px",
+    padding: "10px 20px",
+    borderRadius: "5px",
+  },
+  title: {
+    textAlign: "center",
+    letterSpacing: "1px",
+    marginBottom: "20px",
+    fontSize: "28px",
+    color: COLORS.white,
     fontWeight: FONT_WEIGHT.BOLD,
+    textTransform: "uppercase",
   },
   label: {
     color: COLORS.gray,
@@ -128,5 +135,18 @@ export const ProfileStyle = StyleSheet.create({
   tableFields: {
     padding: "10px",
     textAlign: "center",
+  },
+  button: {
+    margin: "0 20px 20px",
+    border: "none",
+    background: COLORS.green,
+    fontSize: "14px",
+    textTransform: "uppercase",
+    letterSpacing: "0.1px",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    ":hover": {
+      fontWeight: 600,
+    },
   },
 });

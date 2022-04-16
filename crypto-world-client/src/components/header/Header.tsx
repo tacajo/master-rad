@@ -56,10 +56,10 @@ export default function Header({ handleAuth, isAuth, user }: IHeaderProps) {
       <div className={css(style.headerContainerBlock)}>
         <div className={css(style.navigation)}>
           <Link to={routes.cart.path} className={css(style.item)}>
-            Cart
+            My cart
           </Link>
         </div>
-        {isAuth && <span className={css(style.balance)}>{balance}$</span>}
+        {/* {isAuth && <span className={css(style.balance)}>{balance}$</span>} */}
         <div className={css(style.dropdown)}>
           <button className={css(style.button)} onClick={changeVisibility}>
             <img src={UserIcon} alt="nortik brand" className={css(style.icon)} />

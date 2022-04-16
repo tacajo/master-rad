@@ -340,3 +340,13 @@ table {
 td {
   vertical-align: top;
 }
+.modal-dialog .modal-content {
+  background-color: #2e3047;
+  max-width: 1000px !important;
+
+}
+
+.modal-dialog {
+  background-color: #2e3047;
+  max-width: 1000px !important;
+}
