@@ -205,6 +205,45 @@
 				]
 			}
 		},
+		"/user/paypal-subscription-complete": {
+			"post": {
+				"operationId": "PaypalSubscriptionComplete",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ResponseMessage"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"orderId": {
+									"type": "string"
+								},
+								"subscriptionId": {
+									"type": "string"
+								}
+							},
+							"title": "PaypalSubscriptionCompleteBody",
+							"type": "object",
+							"required": [
+								"orderId",
+								"subscriptionId"
+							]
+						}
+					}
+				]
+			}
+		},
 		"/token": {
 			"post": {
 				"operationId": "CreateToken",

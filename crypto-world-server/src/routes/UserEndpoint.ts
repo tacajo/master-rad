@@ -57,4 +57,14 @@ router.put(
   }
 );
 
+router.post(
+  "/paypal-subscription-complete",
+  [JWTMiddleware.verifyToken],
+  async (req: any, res: any) => {
+    console.log("router subs")
+    const controller = Container.get(UserController);
+    const response = await controller.paypalSubscriptionComplete(req.body.orderId, req.body.subscriptionId, req);
+    return res.status(response?.statusCode).send(response);
+  }
+);
 export default router;

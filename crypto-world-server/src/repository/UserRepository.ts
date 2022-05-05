@@ -128,4 +128,24 @@ export class UserRepository {
       console.log(err);
     }
   }
+
+  public static async subscriptionComplete(
+    user_id: number,
+    subscription_id: string,
+    order_id: string
+  ) {
+    try {
+      console.log("repository subs")
+      let result = await UserQueryProcessor.addSubscription(
+        user_id,
+        subscription_id,
+        order_id
+      );
+      console.log("result from query processor subs")
+      if (!result) return;
+      return new ResponseMessage("", "200", result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

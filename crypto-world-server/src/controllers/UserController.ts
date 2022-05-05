@@ -1,4 +1,4 @@
-import { BodyProp, Get, Path, Post, Put, Query, Route } from "tsoa";
+import { BodyProp, Get, Path, Post, Put, Query, Route, Request } from "tsoa";
 import { UserRepository } from "../repository/UserRepository";
 
 @Route("user")
@@ -51,6 +51,14 @@ export default class UserController {
   @Put("/ban/{id}")
   public async banUser(@Path() id: any) {
     let result = await UserRepository.banUser(id);
+    return result;
+  }
+
+  @Post("/paypal-subscription-complete")
+  public async paypalSubscriptionComplete( @BodyProp("orderId") orderId: string,
+  @BodyProp("subscriptionId") subscriptionId: string, @Request() req: any) {
+    console.log("controller subs")
+    let result = await UserRepository.subscriptionComplete(req.user.id, subscriptionId, orderId);
     return result;
   }
 }
