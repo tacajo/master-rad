@@ -149,4 +149,8 @@ export const ProfileStyle = StyleSheet.create({
       fontWeight: 600,
     },
   },
+  subscription: {
+    color: COLORS.lightBlack,
+    fontWeight: FONT_WEIGHT.BOLD,
+  },
 });

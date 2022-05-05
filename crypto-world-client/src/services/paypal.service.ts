@@ -1,13 +1,14 @@
 import constants from "../constants";
 import axiosApi from "../config/axios.config";
 
-export function getUser() {
-  const url = `${constants.BASE_URL}/user`;
+export function getActiveBillingPlans() {
+  const url = `${constants.BASE_URL}/get-billing-plans`;
+
   return axiosApi({ url: url, method: "get" })
     .then((res) => {
       return {
-        data: res.data.data,
-        message: "Success",
+        data: res.data,
+        message: res.data.message,
         error: false,
       };
     })
@@ -20,14 +21,14 @@ export function getUser() {
     });
 }
 
-export function paypalSubscription() {
-  const url = `${constants.BASE_URL}/subscription`;
-  return axiosApi({ url: url, method: "post" })
+export function completeSubscription(orderId: string, subscriptionId: string) {
+  const url = `${constants.BASE_URL}/user/paypal-subscription-complete`;
+
+  return axiosApi({ url: url, method: "post", data: { orderId, subscriptionId } })
     .then((res) => {
-      console.log("uspesna subscripcija!!!");
       return {
-        data: res.data.data,
-        message: "Success",
+        data: res.data,
+        message: res.data.message,
         error: false,
       };
     })

@@ -1,6 +1,6 @@
 import { css } from "aphrodite/no-important";
 import { useEffect, useState } from "react";
-import { getUser } from "../../services/user.service";
+import { getUser, paypalSubscription } from "../../services/user.service";
 import { ProfileStyle as style } from "./ProfileStyle";
 import { HomeStyle } from "../home/HomeStyle";
 import userMapping from "../../utils/user";
@@ -12,6 +12,10 @@ import { getMyCourses, getCoursesFile, downloadFile } from "../../services/cours
 import fileDownload from "js-file-download";
 import constants from "../../constants";
 import CourseDetail from "../../components/courseDetail/CourseDetail";
+import AddCourse from "../../components/addCourse/AddCourse";
+import Subsciption from "../../components/subscription/Subscription";
+import { PayPalButton } from "react-paypal-button-v2";
+import { completeSubscription } from "../../services/paypal.service";
 
 export default function Profile() {
   const [user, setUser] = useState<IUser>({
@@ -26,6 +30,8 @@ export default function Profile() {
   const [courses, setCourses] = useState<ICourse[]>([]);
   const url = `${constants.BASE_URL}/get-s3-file?fileKey=`;
   const [show, setShow] = useState(false);
+  const [showAddCourse, setShowAddCourse] = useState(false);
+  const [showSubscription, setShowSubscription] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState();
 
   useEffect(() => {
@@ -57,9 +63,20 @@ export default function Profile() {
     setShow(true);
   };
 
+  const handleCloseAddCourse = () => setShowAddCourse(false);
+  const handleShowAddCourse = async (course: any) => {
+    setShowAddCourse(true);
+  };
+
+  const handleCloseSubscription = () => setShowSubscription(false);
+  const handleShowSubscription = async () => {
+    setShowSubscription(true);
+  };
   return (
     <div className={css(style.wrapper)}>
       <div className={css(style.leftPart)}>
+        <AddCourse show={showAddCourse} handleClose={handleCloseAddCourse}></AddCourse>
+        <Subsciption show={showSubscription} handleClose={handleCloseSubscription}></Subsciption>
         <div className="text-center text">
           <div className={css(style.nameWrapper)}>
             <p>
@@ -83,14 +100,40 @@ export default function Profile() {
               {t("profile.buttons.showTokens")}
             </button>
           </div> */}
-          <div className={css(style.buttonSection)}>
-            <button className={css(style.buttonMyCourses)}>My courses</button>
-          </div>
+          {/* <div className={css(style.buttonSection)}>
+            <button className={css(style.buttonMyCourses)} onClick={handleShowAddCourse}>
+              Add course
+            </button>
+            <button className={css(style.buttonMyCourses)} onClick={handleShowSubscription}>
+              Automatic payments
+            </button>
+          </div> */}
+          <div className={css(style.subscription)}>SUBSCRIPTION</div>
+          <PayPalButton
+            key="1"
+            options={{ vault: true }}
+            createSubscription={(data: any, actions: any) => {
+              return actions.subscription.create({
+                plan_id: "P-8R962546TL097101AMJ2DFCA",
+              });
+            }}
+            onApprove={(data: any, actions: any) => {
+              // Capture the funds from the transaction
+              return actions.subscription.get().then(async function (details: any) {
+                // Show a success message to your buyer
+                alert("Subscription completed");
+
+                // Call server to save the subscription
+                const result = await completeSubscription(data.orderID, data.subscriptionID);
+                console.log(result);
+              });
+            }}
+          />
         </div>
       </div>
 
       <div className={css(style.rightPart)}>
-        <div className={css(style.title)}>My Courses</div>
+        <div className={css(style.title)}>Paid Courses</div>
         <CourseDetail show={show} handleClose={handleClose} course={selectedCourse} paid={true}></CourseDetail>
         {courses.length > 0 ? (
           <Row>

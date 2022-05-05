@@ -24,7 +24,7 @@ export default function CourseDetail({ show, handleClose, course, paid }: any) {
   }
 
   return (
-    <div>
+    <div className="modal-course-detail">
       <Modal show={show} className={css(style.modalDesign)}>
         <Modal.Header>
           <Modal.Title className={css(style.title)}>{course?.title}</Modal.Title>
