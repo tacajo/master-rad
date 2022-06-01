@@ -305,7 +305,8 @@ const getPayPalAccessToken = async () => {
 };
 
 app.get("/get-billing-plans", async (req, res) => {
-  await getPayPalAccessToken();
+  const token = await getPayPalAccessToken();
+  console.log(token)
   var list_billing_plan = {
     status: "ACTIVE",
     page_size: 10,
