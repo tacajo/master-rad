@@ -52,4 +52,10 @@ export const CourseDetailStyle = StyleSheet.create({
     padding: "0 20px",
     fontWeight: 500,
   },
+  iframeDisableDiv: {
+    pointerEvents: "none",
+  },
+  iframeDiv: {
+    pointerEvents: "auto",
+  },
 });

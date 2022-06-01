@@ -22,6 +22,11 @@ export default function CourseDetail({ show, handleClose, course, paid }: any) {
       setFiles(result.data);
     }
   }
+  function disableRightClick() {
+    window.frames["course-iframe"].oncontextmenu = function () {
+      return false;
+    };
+  }
 
   return (
     <div className="modal-course-detail">
@@ -43,7 +48,7 @@ export default function CourseDetail({ show, handleClose, course, paid }: any) {
           <Row className={css(style.filesSection)}>
             {files?.map((file: IFile) => (
               <Col className="col-4">
-                <div>
+                <div className={course.status == "1" || paid ? css(style.iframeDiv) : css(style.iframeDisableDiv)}>
                   <Watermark
                     text="OnlineCourse"
                     style={
@@ -65,9 +70,11 @@ export default function CourseDetail({ show, handleClose, course, paid }: any) {
                   >
                     {file.file_name.split(".")[1] == "pdf" || file.file_name.split(".")[1] == "mp4" ? (
                       <iframe
+                        id="course-iframe"
                         src={`${url}${file.file_name}&fileSize=${file.file_size}`}
                         title={`${file.file_name}`}
-                        allow={course.status == "1" ? "fullscreen" : ""}
+                        allow="true"
+                        contextMenu="return false"
                       ></iframe>
                     ) : (
                       <img src={`${url}${file.file_name}`} alt={`${file.file_name}`} width="290" height="150" />

@@ -40,7 +40,6 @@ export default function Cart() {
     <div className="container">
       <div className={css(style.title)}>Shopping cart</div>
       <CourseDetail show={show} handleClose={handleClose} course={selectedCourse}></CourseDetail>
-      <input type="file" accept="image/*" />
       <Row>
         {courses?.map((course: ICourse) => (
           <Col className="col-3">

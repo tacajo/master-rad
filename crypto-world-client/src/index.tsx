@@ -75,7 +75,6 @@ const App = () => {
   function handleAuth() {
     setIsAuth(false);
   }
-
   return (
     <div className={css(GlobalStyle.authWrapper)}>
       <React.StrictMode>

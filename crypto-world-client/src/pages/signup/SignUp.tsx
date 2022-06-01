@@ -16,7 +16,7 @@ export default function SignUp() {
     repeatPassword: "",
     firstName: "",
     lastName: "",
-    birthday: "",
+    birthday: "2022-01-01",
     company: "",
     titleInTheCompany: "",
   });
@@ -30,6 +30,7 @@ export default function SignUp() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
+    console.log(value);
     setState({
       ...state,
       [e.currentTarget.name]: value,

@@ -54,11 +54,13 @@ export default function Header({ handleAuth, isAuth, user }: IHeaderProps) {
         )}
       </div>
       <div className={css(style.headerContainerBlock)}>
-        <div className={css(style.navigation)}>
-          <Link to={routes.cart.path} className={css(style.item)}>
-            My cart
-          </Link>
-        </div>
+        {isAuth && (
+          <div className={css(style.navigation)}>
+            <Link to={routes.cart.path} className={css(style.item)}>
+              My cart
+            </Link>
+          </div>
+        )}
         {/* {isAuth && <span className={css(style.balance)}>{balance}$</span>} */}
         <div className={css(style.dropdown)}>
           <button className={css(style.button)} onClick={changeVisibility}>
